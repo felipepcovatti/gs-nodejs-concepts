@@ -53,12 +53,12 @@ app.delete("/repositories/:id", (request, response) => {
 app.post("/repositories/:id/like", (request, response) => {
   const { id } = request.params
   const repo = repositories.find(repo => repo.id == id);
-  if (repo) {
-    repo.likes += 1;
-    response.json(repo);
-  } else {
-    response.status(400).send("Bad Request");
-  }
+
+  if (!repo) return response.status(400).send("Bad Request");
+
+  repo.likes += 1;
+  response.json(repo);
+
 });
 
 module.exports = app;
