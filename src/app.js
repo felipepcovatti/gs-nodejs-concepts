@@ -10,7 +10,7 @@ app.use(cors());
 const repositories = [];
 
 app.get("/repositories", (request, response) => {
-  // TODO
+  response.json(repositories);
 });
 
 app.post("/repositories", (request, response) => {
@@ -27,7 +27,23 @@ app.post("/repositories", (request, response) => {
 });
 
 app.put("/repositories/:id", (request, response) => {
-  // TODO
+  const { id } = request.params;
+  const repo = repositories.find(repo => repo.id == id);
+  const dataToUpdate = request.body;
+  const updatableData = [
+    'title',
+    'url',
+    'techs'
+  ];
+
+  if (!repo) return response.status(400).send("Bad Request");
+
+  for (data in dataToUpdate) {
+    if (updatableData.includes(data)) {
+      repo[data] = dataToUpdate[data];
+    }
+  }
+  response.json(repo);
 });
 
 app.delete("/repositories/:id", (request, response) => {
